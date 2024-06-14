@@ -4,13 +4,6 @@ var app = (function () {
 	/** @returns {void} */
 	function noop() {}
 
-	/** @returns {void} */
-	function add_location(element, file, line, column, char) {
-		element.__svelte_meta = {
-			loc: { file, line, column, char }
-		};
-	}
-
 	function run(fn) {
 		return fn();
 	}
@@ -110,14 +103,14 @@ var app = (function () {
 	}
 
 	/**
-	 * @template T
-	 * @param {string} type
-	 * @param {T} [detail]
-	 * @param {{ bubbles?: boolean, cancelable?: boolean }} [options]
-	 * @returns {CustomEvent<T>}
+	 * @param {Text} text
+	 * @param {unknown} data
+	 * @returns {void}
 	 */
-	function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
-		return new CustomEvent(type, { detail, bubbles, cancelable });
+	function set_data(text, data) {
+		data = '' + data;
+		if (text.data === data) return;
+		text.data = /** @type {string} */ (data);
 	}
 
 	/**
@@ -510,171 +503,13 @@ var app = (function () {
 
 	// generated during release, do not modify
 
-	/**
-	 * The current version, as set in package.json.
-	 *
-	 * https://svelte.dev/docs/svelte-compiler#svelte-version
-	 * @type {string}
-	 */
-	const VERSION = '4.2.18';
 	const PUBLIC_VERSION = '4';
-
-	/**
-	 * @template T
-	 * @param {string} type
-	 * @param {T} [detail]
-	 * @returns {void}
-	 */
-	function dispatch_dev(type, detail) {
-		document.dispatchEvent(custom_event(type, { version: VERSION, ...detail }, { bubbles: true }));
-	}
-
-	/**
-	 * @param {Node} target
-	 * @param {Node} node
-	 * @returns {void}
-	 */
-	function append_dev(target, node) {
-		dispatch_dev('SvelteDOMInsert', { target, node });
-		append(target, node);
-	}
-
-	/**
-	 * @param {Node} target
-	 * @param {Node} node
-	 * @param {Node} [anchor]
-	 * @returns {void}
-	 */
-	function insert_dev(target, node, anchor) {
-		dispatch_dev('SvelteDOMInsert', { target, node, anchor });
-		insert(target, node, anchor);
-	}
-
-	/**
-	 * @param {Node} node
-	 * @returns {void}
-	 */
-	function detach_dev(node) {
-		dispatch_dev('SvelteDOMRemove', { node });
-		detach(node);
-	}
-
-	/**
-	 * @param {Element} node
-	 * @param {string} attribute
-	 * @param {string} [value]
-	 * @returns {void}
-	 */
-	function attr_dev(node, attribute, value) {
-		attr(node, attribute, value);
-		dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
-	}
-
-	/**
-	 * @param {Text} text
-	 * @param {unknown} data
-	 * @returns {void}
-	 */
-	function set_data_dev(text, data) {
-		data = '' + data;
-		if (text.data === data) return;
-		dispatch_dev('SvelteDOMSetData', { node: text, data });
-		text.data = /** @type {string} */ (data);
-	}
-
-	/**
-	 * @returns {void} */
-	function validate_slots(name, slot, keys) {
-		for (const slot_key of Object.keys(slot)) {
-			if (!~keys.indexOf(slot_key)) {
-				console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
-			}
-		}
-	}
-
-	/**
-	 * Base class for Svelte components with some minor dev-enhancements. Used when dev=true.
-	 *
-	 * Can be used to create strongly typed Svelte components.
-	 *
-	 * #### Example:
-	 *
-	 * You have component library on npm called `component-library`, from which
-	 * you export a component called `MyComponent`. For Svelte+TypeScript users,
-	 * you want to provide typings. Therefore you create a `index.d.ts`:
-	 * ```ts
-	 * import { SvelteComponent } from "svelte";
-	 * export class MyComponent extends SvelteComponent<{foo: string}> {}
-	 * ```
-	 * Typing this makes it possible for IDEs like VS Code with the Svelte extension
-	 * to provide intellisense and to use the component like this in a Svelte file
-	 * with TypeScript:
-	 * ```svelte
-	 * <script lang="ts">
-	 * 	import { MyComponent } from "component-library";
-	 * </script>
-	 * <MyComponent foo={'bar'} />
-	 * ```
-	 * @template {Record<string, any>} [Props=any]
-	 * @template {Record<string, any>} [Events=any]
-	 * @template {Record<string, any>} [Slots=any]
-	 * @extends {SvelteComponent<Props, Events>}
-	 */
-	class SvelteComponentDev extends SvelteComponent {
-		/**
-		 * For type checking capabilities only.
-		 * Does not exist at runtime.
-		 * ### DO NOT USE!
-		 *
-		 * @type {Props}
-		 */
-		$$prop_def;
-		/**
-		 * For type checking capabilities only.
-		 * Does not exist at runtime.
-		 * ### DO NOT USE!
-		 *
-		 * @type {Events}
-		 */
-		$$events_def;
-		/**
-		 * For type checking capabilities only.
-		 * Does not exist at runtime.
-		 * ### DO NOT USE!
-		 *
-		 * @type {Slots}
-		 */
-		$$slot_def;
-
-		/** @param {import('./public.js').ComponentConstructorOptions<Props>} options */
-		constructor(options) {
-			if (!options || (!options.target && !options.$$inline)) {
-				throw new Error("'target' is a required option");
-			}
-			super();
-		}
-
-		/** @returns {void} */
-		$destroy() {
-			super.$destroy();
-			this.$destroy = () => {
-				console.warn('Component was already destroyed'); // eslint-disable-line no-console
-			};
-		}
-
-		/** @returns {void} */
-		$capture_state() {}
-
-		/** @returns {void} */
-		$inject_state() {}
-	}
 
 	if (typeof window !== 'undefined')
 		// @ts-ignore
 		(window.__svelte || (window.__svelte = { v: new Set() })).v.add(PUBLIC_VERSION);
 
 	/* src/lib/popup.svelte generated by Svelte v4.2.18 */
-	const file = "src/lib/popup.svelte";
 
 	function create_fragment(ctx) {
 		let main;
@@ -683,103 +518,49 @@ var app = (function () {
 		let t1;
 		let t2;
 
-		const block = {
-			c: function create() {
+		return {
+			c() {
 				main = element("main");
 				h1 = element("h1");
 				t0 = text("Hello ");
 				t1 = text(/*name*/ ctx[0]);
 				t2 = text(" !!");
-				attr_dev(h1, "class", "bg-red-800");
-				add_location(h1, file, 6, 4, 61);
-				add_location(main, file, 5, 2, 50);
+				attr(h1, "class", "bg-red-800");
 			},
-			l: function claim(nodes) {
-				throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+			m(target, anchor) {
+				insert(target, main, anchor);
+				append(main, h1);
+				append(h1, t0);
+				append(h1, t1);
+				append(h1, t2);
 			},
-			m: function mount(target, anchor) {
-				insert_dev(target, main, anchor);
-				append_dev(main, h1);
-				append_dev(h1, t0);
-				append_dev(h1, t1);
-				append_dev(h1, t2);
-			},
-			p: function update(ctx, [dirty]) {
-				if (dirty & /*name*/ 1) set_data_dev(t1, /*name*/ ctx[0]);
+			p(ctx, [dirty]) {
+				if (dirty & /*name*/ 1) set_data(t1, /*name*/ ctx[0]);
 			},
 			i: noop,
 			o: noop,
-			d: function destroy(detaching) {
+			d(detaching) {
 				if (detaching) {
-					detach_dev(main);
+					detach(main);
 				}
 			}
 		};
-
-		dispatch_dev("SvelteRegisterBlock", {
-			block,
-			id: create_fragment.name,
-			type: "component",
-			source: "",
-			ctx
-		});
-
-		return block;
 	}
 
 	function instance($$self, $$props, $$invalidate) {
-		let { $$slots: slots = {}, $$scope } = $$props;
-		validate_slots('Popup', slots, []);
 		let { name } = $$props;
-
-		$$self.$$.on_mount.push(function () {
-			if (name === undefined && !('name' in $$props || $$self.$$.bound[$$self.$$.props['name']])) {
-				console.warn("<Popup> was created without expected prop 'name'");
-			}
-		});
-
-		const writable_props = ['name'];
-
-		Object.keys($$props).forEach(key => {
-			if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Popup> was created with unknown prop '${key}'`);
-		});
 
 		$$self.$$set = $$props => {
 			if ('name' in $$props) $$invalidate(0, name = $$props.name);
 		};
 
-		$$self.$capture_state = () => ({ name });
-
-		$$self.$inject_state = $$props => {
-			if ('name' in $$props) $$invalidate(0, name = $$props.name);
-		};
-
-		if ($$props && "$$inject" in $$props) {
-			$$self.$inject_state($$props.$$inject);
-		}
-
 		return [name];
 	}
 
-	class Popup extends SvelteComponentDev {
+	class Popup extends SvelteComponent {
 		constructor(options) {
-			super(options);
+			super();
 			init(this, options, instance, create_fragment, safe_not_equal, { name: 0 });
-
-			dispatch_dev("SvelteRegisterComponent", {
-				component: this,
-				tagName: "Popup",
-				options,
-				id: create_fragment.name
-			});
-		}
-
-		get name() {
-			throw new Error("<Popup>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-		}
-
-		set name(value) {
-			throw new Error("<Popup>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 		}
 	}
 
@@ -793,4 +574,3 @@ var app = (function () {
 	return app;
 
 })();
-//# sourceMappingURL=popup.js.map
