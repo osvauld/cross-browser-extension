@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "name": "example",
+    "version": "1.0",
+    "description": "example",
+    "icons": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    
+    "permissions": [
+      "storage",
+      "activeTab",
+      "tabs",
+      "<all_urls>"
+    ],
+    "browser_action": {
+      "default_icon": "icons/icon48.png",
+      "default_popup": "popup.html",
+      "default_title": "example"
+    },
+   
+  
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  }
+  
