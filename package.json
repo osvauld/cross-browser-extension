@@ -9,7 +9,7 @@
     "dev": "BUILD_ENV=chrome rollup -c -w",
     "chrome": "BUILD_ENV=chrome rollup -c",
     "firefox": "BUILD_ENV=firefox rollup -c",
-    "lint": "eslint  --fix 'src/**/*.{js,ts,svelte}'",
+    "lint": "eslint  --fix 'src/**/*.{js,ts,svelte}' --ignore-pattern 'src/scripts/wasm.js'",
     "format": "prettier --write 'src/**/*.{js,ts,svelte}'",
     "prepare": "husky"
   },
