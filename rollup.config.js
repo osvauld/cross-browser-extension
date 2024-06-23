@@ -74,7 +74,6 @@ function buildConfig(inputFileName, outputFileName) {
       typescript({ sourceMap: !production, tsconfig: "./tsconfig.app.json" }),
       resolve({ browser: true }),
       commonjs(),
-      serve(),
     ],
     watch: {
       clearScreen: false,
@@ -84,4 +83,45 @@ function buildConfig(inputFileName, outputFileName) {
 export default [
   buildConfig("popup", "popup"),
   buildConfig("dashboard", "dashboard"),
+  {
+    input: "src/scripts/background.ts",
+    output: {
+      format: buildEnv === 'firefox' ? 'iife' : 'es',
+      name: "background",
+      file: "public/background.js",
+      sourcemap: !production,
+    },
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.background.json",
+        sourceMap: !production,
+      }),
+      commonjs(),
+      resolve({ browser: true, preferBuiltins: false }),
+      serve()
+    ],
+    watch: {
+      clearScreen: false,
+    },
+  },
+  {
+    input: "src/scripts/content.ts",
+    output: {
+      format: "iife",
+      name: "content",
+      file: "public/content.js",
+      sourcemap: !production,
+    },
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.background.json",
+      }),
+      commonjs(),
+      resolve({ browser: true, preferBuiltins: false }),
+      serve(),
+    ],
+    watch: {
+      clearScreen: false,
+    },
+  },
 ];
