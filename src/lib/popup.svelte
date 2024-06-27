@@ -13,8 +13,19 @@
 	};
 </script>
 
-<main>
+
+
+<main class="flex flex-col justify-center items-center">
 	<h1 class="bg-blue-600">Hello {name} !!</h1>
-	<button class="bg-blue-600" on:click="{openFullscreen}">Click me</button>
-	<button class="bg-green-50" on:click="{sendMessage}"> Send Message</button>
-</main>
+	<button
+	  class="bg-blue-600 px-[6px] py-[14px] mt-6 text-white font-semibold"
+	  on:click={openFullscreen}>Click me</button
+	>
+	
+	<button
+    class="bg-green-600 px-[6px] py-[14px] mt-3 text-white font-semibold"
+    on:click={sendMessage}
+  >
+    Send Message</button
+  >
+  </main>
